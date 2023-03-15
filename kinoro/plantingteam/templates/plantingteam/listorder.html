@@ -1,0 +1,39 @@
+{% extends 'plantingteam/base.html' %}
+
+{% block title %} Report {% endblock %}
+
+{% block content %}
+{% if certificates.count == 0 %}
+<p>No orders found</p>
+{% endif %}
+{% if certificates.count > 0 %}
+<a href="{% url 'plantingteam:generate' %}"><button>Generate PDF</button></a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Certificate ID</th>
+            <th>Receiver Name</th>
+            <th>Number of Tree</th>
+            <th>Upload</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for certificate in certificates %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ certificate.id }}</td>
+                {% if certificate.receiverName %}
+                    <td>{{ certificate.receiverName }}</td>
+                {% else %}
+                    <td>{{ certificate.order.bill.firstName }}</td>
+                {% endif %}
+                <td>{{ certificate.getTotalTrees }}</td>
+                <td><a href="{% url 'plantingteam:order' certificate.id %}"><button>Upload</button></a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% endblock %}

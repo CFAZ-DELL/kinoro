@@ -1,0 +1,31 @@
+{% extends 'ape/base.html' %}
+
+{% block title %} Report {% endblock %}
+
+{% block content %}
+
+<h1>Report {{ report.order.id }}</h1>
+<h3>Time: {{ report.date }}</h3>
+
+
+
+{% for certificate in certificates %}
+    {% if certificate.receiverName %}
+        <h3>Receiver: {{ certificate.receiverName }}</h3>
+    {% else %}
+        <h3>Receiver: {{ certificate.order.bill.firstName }}</h3>
+    {% endif %}
+    <h3>Image: </h3>
+    <img src="{{ certificate.photo.url }}" alt="Image" width="200" height="200"/>
+    <h3>Latitude: {{ certificate.latitude }}</h3>
+    <h3>Longitude: {{ certificate.longitude }}</h3>
+{% endfor %}
+
+<br>
+<a href="{% url 'ape:listreport' %}" class="btn btn-primary">Back</a>
+<a href="{% url 'ape:approve' report.id %}" class="btn btn-primary">Approve</a>
+
+
+
+    
+{% endblock %}

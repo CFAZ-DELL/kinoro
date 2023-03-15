@@ -1,0 +1,30 @@
+{% extends 'ape/base.html' %}
+
+{% block title %} Report {% endblock %}
+
+{% block content %}
+    {% if reports|length == 0 %}
+        <p>No reports found</p>
+    {% else %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in reports %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ report.id }}</td>
+                        <td>{{ report.date }}</td>
+                        <td><a href="{% url 'ape:report' report.id %}">View</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends 'customer/base.html'%} {% block title %} Kinoro | Cart {% endblock %}
+{% block content %}
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.5.3/css/bootstrap.min.css">
+
+        <style>
+            .mainTrack {
+                background-color: #f4f0ec;
+                padding: 50px;
+                border-radius: 10px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                font: 16px 'Poppins', sans-serif;
+                color: #000000;
+                 }         
+              
+              input[type="text"] {
+                border: none;
+                padding: 10px;
+                border-radius: 5px;
+                width: 90%;
+                margin-right: 10px;
+                font-size: 16px;
+                color: #000000;
+                justify-content: center;
+              }
+              
+              button {
+                background-color: #006400;
+                color: #FFFFFF;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                font-size: 16px;
+                cursor: pointer;
+              }
+              
+              h2 {
+                color: #000000;
+                font-size: 25px;
+                margin-top: 30px;
+              }
+              
+              p {
+                color: #000000;
+                font-size: 16px;
+                margin-bottom: 10px;
+              }
+              
+              ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+              }
+              
+              li {
+                margin-bottom: 10px;
+                color: #4A4A4A;
+                font-size: 16px;
+              }
+              
+              @media screen and (max-width: 768px) {
+                input[type="text"], button {
+                  width: 100%;
+                  margin-bottom: 10px;
+                }
+              }
+        </style>    
+    </head>
+<body>
+        
+
+<div class="mainTrack">
+        <form method="get" action="">
+            <input name="query" class="" type="text" value="{{ query }}" placeholder="Search Order Tracking">
+            <button class="">Search</button>
+        </form>
+
+        <div class="">
+            <div class="">
+                    <div>
+                        {% if found %}
+                        <h2>Order Details</h2>
+                        <p>Order ID: {{ q.id }}</p>
+                        <p>Order Date: {{ q.orderDate }}</p>
+                        <h2>Tracking Details</h2>
+                        {% if tracking %}
+                          <ul>
+                          {% for t in tracking %}
+                            <li>Status: {{ t.status }}</li>
+                            <li>Date: {{ t.date }}</li>
+                            <br>
+                          {% endfor %}
+                          </ul>
+                        {% else %}
+                          <p>No tracking information found for this order.</p>
+                        {% endif %}
+                      {% else %}
+                        {% if q %}
+                        <p>No order found with Tracking ID "{{ q }}".</p>
+                        {% endif %}
+                      {% endif %}
+                       
+                        
+                    </div>
+            </div>
+       </div>
+
+
+
+</div>    
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+{% endblock%}

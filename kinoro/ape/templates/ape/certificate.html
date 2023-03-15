@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Certificate</title>
+    <style>
+        @page {
+            size: letter landscape;
+            margin: 2cm;
+        }
+    </style>
+</head>
+<body>
+    <h1>TREE PLANTING</h1>
+    <h1>CERTIFICATE OF APPRECIATION</h1>
+    <p>This certificate is produly presented to</p>
+    <p> {{ certificate.receiverName }} </p>
+    <p>for supporting the ROAR initiative</p>
+    <p>{{ certificate.getTotalTrees }} trees have been planted on</p>
+    <p>( {{ certificate.latitude }}, {{ certificate.longitude }} )</p>
+</body>
+</html>
