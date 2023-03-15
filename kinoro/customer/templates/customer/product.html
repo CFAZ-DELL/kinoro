@@ -1,48 +1,56 @@
-{% extends 'customer/base.html' %}
+{% extends 'customer/base.html' %} {%block title %} Product Details 
+{% endblock%} {% block content %}
 
-{%block title %} Product Details {% endblock %}
-
-{% block content %}
-    
-    <div class="py-6 pt-5">
-        <h1 class="m-auto text-center pb-1">product detail page.</h1>
-        <p class="text-center pb-4">Please select the trees package you want to order</p>
-        <div class="container">
+<div class="py-6 pt-5">
+  <h1 class="m-auto text-center pb-1">Tree Packages</h1>
+  <p class="text-center pb-4">
+    Please select the trees package you want to order
+  </p>
+  <div class="container">
+    <div class="row">
+      {% for package in product %}
+      <div class="col-md-4 pb-3">
+      <form
+        method="post"
+        action="."
+      >
+        {% csrf_token %}
+        <input type="hidden" name="package_id" value="{{ package.id }}" />
+        <div class="card">
+          <div class="card-body">
             <div class="row">
-                {% for package in product %}
-                <div class="col-md-4 pb-3">
-                    <!--set condition here-->
-                    
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="text-center">
-                                    <h3>{{package.name}}</h3>
-                                </div>
-                                {% comment %} <div class="col-12">
-                                    image here
-                                    <img src="{{package.image.url}}" alt="" class="img-fluid">
-                                </div> {% endcomment %}
-                                <div class="col-12 text-center pb-2">
-                                    <p>RM {{package.price}}</p>
-                                    <p>{{package.treePerPackage}} tree(s)</p>
-                                </div>
-
-                                <!--form method -->
-                                <div class="col-12 pb-3 text-center">
-                                    <label for="quantity">Quantity:</label><br>
-                                    <input class="border w-25 rounded-2"type="number" id="quantity" name="quantity" min="1">
-                                </div>
-                                <!--button-->
-                                <a href="{% url 'customer:cart' %}" class=" btn border border-rounded bg-warning w-50 m-auto"><strong>add to cart</strong></a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!--end condition here-->
-                </div>
-                {% endfor %}
+              <div class="text-center">
+                <h3>{{package.name}}</h3>
+              </div>
+              <div class="col-12 text-center pb-2">
+                <p>RM {{package.price}}</p>
+                <p>{{package.treePerPackage}} tree(s)</p>
+              </div>
+              <div class="col-12 pb-3 text-center">
+                <label for="quantity">Quantity:</label><br />
+                <input
+                  class="border w-25 rounded-2"
+                  type="number"
+                  id="quantity"
+                  name="quantity"
+                  min="1"
+                />
+              </div>
+              <div class="col-12 pb-3 text-center">
+                <button
+                  type="submit"
+                  class="btn border border-rounded bg-warning w-50 m-auto"
+                >
+                  <strong>Add to Cart</strong>
+                </button>
+              </div>
             </div>
+          </div>
         </div>
+      </form>
     </div>
-{%endblock%}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

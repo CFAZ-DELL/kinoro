@@ -12,6 +12,7 @@ from django.core.mail import EmailMessage
 from io import BytesIO
 import magic
 from PIL import Image
+from plantingteam.views import createTrackingStatus
 
 # Create your views here.
 @login_required
@@ -54,9 +55,12 @@ def approve(request, pk):
         for cert in certificates:
             if(cert.receiverName):
                 receiverName = cert.receiverName
-                receiverEmail = cert.receiverEmail
             else:
                 receiverName = cert.order.bill.firstName + ' ' + cert.order.bill.lastName
+            
+            if(cert.receiverEmail):
+                receiverEmail = cert.receiverEmail
+            else:
                 receiverEmail = cert.order.bill.email
 
             # Generate the certificate PDF file
@@ -93,6 +97,8 @@ def approve(request, pk):
         report = Report.objects.get(pk=pk)
         report.approval = True
         report.save()
+        createTrackingStatus(certificates, 'Planted')
+        createTrackingStatus(certificates, 'Certificate Sent')
         return redirect('ape:listreport')
     except Exception as e:
         print(e)

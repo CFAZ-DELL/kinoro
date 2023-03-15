@@ -1,0 +1,121 @@
+{% extends 'customer/base.html'%} {% block title %} Kinoro | Cart {% endblock %}
+{% block content %}
+<section
+  class="h-custom"
+  style="
+    background-image: url('https://www.pixelstalk.net/wp-content/uploads/images5/Pastel-Green-Aesthetic-Wallpaper-for-Windows.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+  "
+>
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12">
+        <div
+          class="card card-registration card-registration-2"
+          style="border-radius: 15px"
+        >
+          <div class="card-body p-0">
+            <div class="row g-0">
+              <!--billing details-->
+              <div class="col-lg-12 bg-grey">
+                <div class="p-5">
+                  <h3 class="fw-bold mb-5 mt-2 pt-1">
+                    Fill in certificates details
+                  </h3>
+
+                  <form method="POST" action="{% url 'customer:certificate' pk %}">
+                    {% for item in cart_quantities %}
+                    <div>
+                      <div class="my-3">
+                        <h5 class="text-default">{{ item.package.name }}</h5>
+                      </div>
+                      {% csrf_token %}
+                      
+                      {{ cert }}
+                    </div>
+                    {% endfor %}
+
+                    <!-- Button trigger modal -->
+                    <button
+                      type="submit"
+                      class="btn btn-dark btn-block btn-lg"
+                      data-mdb-ripple-color="dark"
+                    >
+                      Checkout
+                    </button>
+                  </form>
+                  <!-- Modal -->
+                  {% comment %}
+                  <div
+                    class="modal fade"
+                    id="exampleModal"
+                    tabindex="-1"
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">
+                            Order confirmation
+                          </h5>
+                          <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <div class="modal-body">
+                          Are you sure you want to checkout?
+                        </div>
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="btn btn-danger"
+                            data-bs-dismiss="modal"
+                          >
+                            Not yet
+                          </button>
+                          <button type="submit" class="btn btn-success">
+                            Yes
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% endcomment %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock%} {% comment %}
+<div class="mb-3">
+  <!-- form fields for each quantity of the package -->
+  <div class="mb-3">
+    <label for="name_{{ item.id }}" class="form-label">Full Name</label>
+    <input
+      type="text"
+      class="form-control"
+      id="name_{{ item.id }}"
+      name="name_{{ item.id }}"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="email_{{ item.id }}" class="form-label">Email</label>
+    <input
+      type="email"
+      class="form-control"
+      id="email_{{ item.id }}"
+      name="email_{{ item.id }}"
+    />
+  </div>
+</div>
+{% endcomment %}

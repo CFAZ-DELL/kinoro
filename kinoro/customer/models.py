@@ -10,15 +10,21 @@ class Package(models.Model):
     
 class Cart(models.Model):
     id = models.AutoField(primary_key=True)
-
-    def __str__(self):
-        return self.id
     
 
 class CartQuantity(models.Model):
     package = models.ForeignKey(Package, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+
+    def totaltreesperpackage(self):
+        return self.quantity * self.package.treePerPackage
+    
+    def totalpriceperpackage(self):
+        return self.quantity * self.package.price
+    
+    def quantityrange(self):
+        return range(1, self.quantity + 1)
 
     
 class Address(models.Model):

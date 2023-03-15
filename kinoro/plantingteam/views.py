@@ -10,6 +10,7 @@ from xhtml2pdf import pisa
 from django.template.loader import get_template
 import zipfile
 from django.contrib.auth.decorators import login_required
+from customer.models import Tracking
 
 # Create your views here.
 
@@ -30,11 +31,12 @@ def generate(request):
     zip_file.seek(0)
     response = HttpResponse(zip_file, content_type='application/zip')
     response['Content-Disposition'] = f'attachment; filename="{yesterday}.zip"'
+    createTrackingStatus(certificates, "Planting")
 
     return response
     
+    
 
-@login_required
 def generateOrderList(certificates):
     yesterday = timezone.now().date() - timezone.timedelta(days=1)
 
@@ -54,7 +56,27 @@ def generateOrderList(certificates):
 
     return response
 
-@login_required
+def createTrackingStatus(certs, status):
+    order = []
+    for cert in certs:
+        if cert.order not in order:
+            order.append(cert.order)
+    
+    for o in order:
+        found = False
+        allTracking = Tracking.objects.all().filter(order=o)
+        for t in allTracking:
+            if t.status == status:
+                found = True
+                break
+        if not found:
+            tracking = Tracking.objects.create(order=o, status=status)
+            tracking.save()
+    
+    return
+    
+
+
 def generateThankYou(cert):
     template_path = 'plantingteam/thankyou.html'
     context = {'receiverName': cert.receiverName, 'treeCount': cert.getTotalTrees()}
@@ -93,6 +115,7 @@ def order(request, pk):
                     certificate.latitude = latitude
                     certificate.longitude = longitude
                     certificate.save()
+                    createTrackingStatus([certificate], "Planted")
                     return redirect('plantingteam:orderlist')
             return redirect('plantingteam:orderlatlong', pk=pk)
     else:
@@ -107,6 +130,7 @@ def orderlatlong(request, pk):
         form = uploadLatLong(request.POST, instance=certificate)
         if form.is_valid():
             form.save()
+            createTrackingStatus([certificate], "Planted")
             return redirect('plantingteam:orderlist')
     else:
         form = uploadLatLong(instance=certificate)
