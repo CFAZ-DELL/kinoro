@@ -16,7 +16,8 @@ from customer.models import Tracking
 
 @login_required
 def generate(request):
-    yesterday = timezone.now().date()
+    
+    yesterday = timezone.now().date() - timezone.timedelta(days=1)
     certificates = Certificate.objects.all().filter(order__orderDate__date=yesterday)
 
     zip_file = BytesIO()
@@ -96,8 +97,7 @@ def generateThankYou(cert):
 
 @login_required
 def orderlist(request):
-    # yesterday = timezone.now().date() - timezone.timedelta(days=1)
-    yesterday = timezone.now().date()
+    yesterday = timezone.now().date() - timezone.timedelta(days=1)
     certificates = Certificate.objects.all().filter(order__orderDate__date=yesterday, photo='')
     return render(request, 'plantingteam/listorder.html', {'certificates': certificates})
 
